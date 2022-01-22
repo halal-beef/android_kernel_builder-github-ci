@@ -1,0 +1,23 @@
+name: Build kernel
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y git build-essential ccache curl zip && apt install -y libssl-dev bc python
+
+      - name: Checkout Kernel And Others
+        run: |
+          git clone https://github.com/mediatek-android-development/android_kernel_mediatek_mt6761-62-4.9.git
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 "gcc"
+          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 "clang"
